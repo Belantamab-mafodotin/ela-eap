@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro EAP – Belantamab Mafodotin</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e18;--bg2:#111827;--bg3:#1a2236;
+  --border:#1e2d45;--border2:#2a3f60;
+  --accent:#3b82f6;--accent2:#93c5fd;--aglow:rgba(59,130,246,.15);
+  --green:#10b981;--gbg:rgba(16,185,129,.12);
+  --amber:#f59e0b;--abg:rgba(245,158,11,.12);
+  --red:#ef4444;--rbg:rgba(239,68,68,.12);
+  --purple:#8b5cf6;--pbg:rgba(139,92,246,.12);
+  --teal:#06b6d4;--tbg:rgba(6,182,212,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#4b5f7c;
+  --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --r:8px;--rl:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* LOGIN */
+.login-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at top,rgba(59,130,246,.08),transparent 60%),var(--bg)}
+.login-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:36px 32px;width:100%;max-width:400px}
+.login-logo{margin-bottom:24px;text-align:center}
+.login-pill{font-size:10px;font-family:var(--mono);color:var(--accent);background:var(--aglow);border:1px solid rgba(59,130,246,.25);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:10px}
+.login-title{font-size:18px;font-weight:600;margin-bottom:4px}.login-sub{font-size:12px;color:var(--text3)}
+.login-form{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.login-form label{font-size:11px;color:var(--text3);margin-bottom:4px;display:block}
+.login-form input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border .15s}
+.login-form input:focus{border-color:var(--accent)}
+.login-btn{background:var(--accent);color:#fff;border:none;padding:11px;border-radius:var(--r);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;margin-top:6px}
+.login-btn:hover{background:#5b9af8}.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-switch{text-align:center;margin-top:16px;font-size:12px;color:var(--text3)}
+.login-switch a{color:var(--accent2);cursor:pointer;text-decoration:none}.login-switch a:hover{text-decoration:underline}
+.login-err{background:var(--rbg);border:1px solid var(--red);color:var(--red);padding:8px 12px;border-radius:var(--r);font-size:12px;margin-top:10px;display:none}
+.login-err.show{display:block}
+
+.shell{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+.sb{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-top{padding:18px 14px;border-bottom:1px solid var(--border)}
+.sb-pill{font-size:10px;font-family:var(--mono);color:var(--accent);background:var(--aglow);border:1px solid rgba(59,130,246,.25);padding:2px 8px;border-radius:4px;display:inline-flex;align-items:center;gap:5px;margin-bottom:8px}
+.ld{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sb-title{font-size:13px;font-weight:600;line-height:1.3}.sb-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.nav{padding:10px 6px;flex:1}
+.nlbl{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:.07em;padding:0 8px 3px;margin-top:10px;display:block}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:12px;color:var(--text2);transition:all .15s;margin:1px 0}
+.ni:hover{background:var(--bg3);color:var(--text)}.ni.on{background:var(--aglow);color:var(--accent2);border:1px solid rgba(59,130,246,.2)}
+.ni-dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.6;flex-shrink:0}.ni.on .ni-dot{opacity:1}
+.ni-cnt{margin-left:auto;font-size:10px;font-family:var(--mono);background:var(--bg3);padding:1px 5px;border-radius:99px;color:var(--text3)}
+.sb-bot{padding:12px 6px;border-top:1px solid var(--border)}
+.user-info{padding:10px 8px 12px;font-size:11px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:8px}
+.user-info .user-email{color:var(--text2);font-weight:500;word-break:break-all;margin-bottom:3px}
+.user-logout{font-size:11px;color:var(--text3);cursor:pointer;margin-top:6px;text-decoration:underline}
+.user-logout:hover{color:var(--red)}
+.btn-new{width:100%;background:var(--accent);color:#fff;border:none;padding:9px;border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-new:hover{background:#5b9af8}
+.main{overflow:auto}
+.ph{padding:20px 26px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.pt{font-size:19px;font-weight:600}.ps{font-size:12px;color:var(--text3);margin-top:2px}
+.hacts{display:flex;gap:8px;flex-shrink:0}
+.btn{padding:6px 13px;border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);transition:all .15s}
+.btn:hover{color:var(--text);border-color:var(--accent)}.btn-p{background:var(--accent);border-color:var(--accent);color:#fff}.btn-p:hover{background:#5b9af8;color:#fff}
+.pc{padding:20px 26px}
+.pv{display:none}.pv.on{display:block}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:13px 15px}
+.sl{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.sv{font-size:23px;font-weight:600;line-height:1}.ss{font-size:11px;color:var(--text3);margin-top:3px}
+.sv-blue{color:var(--accent2)}.sv-green{color:var(--green)}.sv-amber{color:var(--amber)}.sv-purple{color:var(--purple)}
+.esq-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.esq-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.esq-icon{width:38px;height:38px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);font-weight:600;flex-shrink:0}
+.esq-icon.vd{background:var(--pbg);color:var(--purple);border:1px solid rgba(139,92,246,.3)}
+.esq-icon.pd{background:var(--gbg);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.esq-body{flex:1}.esq-name{font-size:13px;font-weight:500}.esq-combo{font-size:11px;color:var(--text3)}
+.esq-n{font-size:24px;font-weight:600}.esq-n.vd{color:var(--purple)}.esq-n.pd{color:var(--green)}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.cc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px}
+.ct{font-size:12px;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:var(--text2)}
+.cdot{width:7px;height:7px;border-radius:50%}
+.bc{display:flex;flex-direction:column;gap:7px}
+.br{display:flex;align-items:center;gap:7px}
+.bl{font-size:11px;color:var(--text2);width:150px;flex-shrink:0;text-align:right}
+.bt{flex:1;background:var(--bg3);border-radius:3px;height:6px;overflow:hidden}
+.bf{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.bv{font-size:11px;font-family:var(--mono);color:var(--text3);width:20px;text-align:right}
+.search-row{display:flex;gap:8px;margin-bottom:12px}
+.si{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:7px 11px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border .15s}
+.si:focus{border-color:var(--accent)}.si::placeholder{color:var(--text3)}
+.pat-grid{display:flex;flex-direction:column;gap:7px}
+.pat-row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s}
+.pat-row:hover{border-color:var(--accent);background:rgba(59,130,246,.04)}
+.pat-id{font-family:var(--mono);font-size:11px;color:var(--accent2);min-width:66px}
+.pat-name{font-weight:500;font-size:13px;flex:1}
+.pat-inst{font-size:11px;color:var(--text3);flex:1}
+.pat-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.pat-infus{font-size:11px;font-family:var(--mono);color:var(--teal);background:var(--tbg);padding:2px 6px;border-radius:99px}
+.badge{display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:500}
+.bg{background:var(--gbg);color:var(--green)}.ba{background:var(--abg);color:var(--amber)}
+.br2{background:var(--rbg);color:var(--red)}.bb{background:var(--aglow);color:var(--accent2)}
+.bgr{background:var(--bg3);color:var(--text3)}.bpu{background:var(--pbg);color:var(--purple)}
+.bteal{background:var(--tbg);color:var(--teal)}
+.detail-header{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px;margin-bottom:14px}
+.dh-id{font-family:var(--mono);font-size:11px;color:var(--accent2);margin-bottom:3px}
+.dh-name{font-size:17px;font-weight:600}.dh-inst{font-size:12px;color:var(--text3);margin-top:2px}
+.dh-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.dh-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+.dh-stat{text-align:center}
+.dh-stat-val{font-size:18px;font-weight:600;color:var(--accent2)}.dh-stat-lbl{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.dtabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:14px}
+.dtab{padding:8px 16px;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.dtab:hover{color:var(--text2)}.dtab.on{color:var(--accent2);border-bottom-color:var(--accent)}
+.tl-wrap{display:grid;grid-template-columns:1fr 310px;gap:14px;align-items:start}
+.tl-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.tl-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tl-title{font-size:12px;font-weight:500}
+.tl-body{padding:16px;max-height:420px;overflow-y:auto}
+.tl-empty{text-align:center;padding:28px;color:var(--text3);font-size:12px}
+.ev-list{display:flex;flex-direction:column;position:relative}
+.ev-list::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:1px;background:var(--border2)}
+.ev-item{display:flex;gap:12px;padding:0 0 18px;position:relative}
+.ev-item:last-child{padding-bottom:0}
+.ev-dot{width:25px;height:25px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;position:relative;z-index:1;border:2px solid var(--bg2)}
+.ev-dot.infusion{background:#0e7490}.ev-dot.ea_ocular{background:#b45309}
+.ev-dot.ea_no_ocular{background:#9f1239}.ev-dot.respuesta{background:#166534}
+.ev-dot.status{background:#3730a3}.ev-dot.nota{background:#374151}
+.ev-content{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px}
+.ev-date{font-size:10px;font-family:var(--mono);color:var(--text3);margin-bottom:3px}
+.ev-author{font-size:9px;color:var(--text3);font-family:var(--mono);margin-left:6px;opacity:.7}
+.ev-type-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.ev-type-lbl.infusion{color:var(--teal)}.ev-type-lbl.ea_ocular{color:var(--amber)}
+.ev-type-lbl.ea_no_ocular{color:var(--red)}.ev-type-lbl.respuesta{color:var(--green)}
+.ev-type-lbl.status{color:var(--purple)}.ev-type-lbl.nota{color:var(--text3)}
+.ev-desc{font-size:12px;color:var(--text);line-height:1.4}
+.ev-detail{font-size:11px;color:var(--text3);margin-top:2px}
+.add-ev{padding:14px 16px}
+.add-ev-title{font-size:10px;font-family:var(--mono);color:var(--accent);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.ev-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.ev-type-btn{padding:9px;border:1px solid var(--border);border-radius:var(--r);cursor:pointer;font-size:11px;color:var(--text2);background:var(--bg3);transition:all .15s;text-align:center;user-select:none}
+.ev-type-btn:hover{border-color:var(--border2)}.ev-type-btn.sel{border-color:var(--accent);background:var(--aglow);color:var(--accent2)}
+.ev-type-btn .eico{font-size:14px;display:block;margin-bottom:2px}
+.ev-form-inline{display:flex;flex-direction:column;gap:9px}
+.charts-tab{display:flex;flex-direction:column;gap:14px}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px}
+.chart-card-title{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+canvas{display:block;width:100%!important}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:18px;overflow-y:auto}
+.mo.open{display:flex}
+.md{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);width:100%;max-width:800px;margin:auto}
+.mh{padding:14px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mttl{font-size:14px;font-weight:600}.msub{font-size:11px;color:var(--text3);margin-top:1px}
+.mclose{background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;line-height:1}.mclose:hover{color:var(--text)}
+.mb{padding:22px;max-height:76vh;overflow-y:auto}
+.mf{padding:11px 22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.mf-r{display:flex;gap:8px}
+.tabs2{display:flex;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto;gap:0}
+.tab2{padding:9px 15px;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:5px}
+.tab2:hover{color:var(--text2)}.tab2.on{color:var(--accent2);border-bottom-color:var(--accent)}
+.tab2 .tbadge{font-size:10px;background:var(--bg3);padding:1px 5px;border-radius:99px;color:var(--text3)}
+.tab2.on .tbadge{background:var(--aglow);color:var(--accent2)}
+.tab-steps{display:flex;gap:3px;margin-bottom:5px}
+.ts{height:3px;flex:1;border-radius:2px;background:var(--border2);transition:background .3s}.ts.done{background:var(--accent)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.fg1{display:grid;grid-template-columns:1fr}
+.f{display:flex;flex-direction:column;gap:4px}.f.s2{grid-column:span 2}.f.s3{grid-column:span 3}
+.fl{font-size:11px;color:var(--text3);font-weight:500}.fl .req{color:var(--red);margin-left:2px}
+.f input,.f select,.f textarea,.ev-form-inline input,.ev-form-inline select,.ev-form-inline textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;color:var(--text);font-family:var(--font);font-size:12px;outline:none;transition:border .15s;width:100%}
+.f input:focus,.f select:focus,.f textarea:focus,.ev-form-inline input:focus,.ev-form-inline select:focus,.ev-form-inline textarea:focus{border-color:var(--accent)}
+.f textarea,.ev-form-inline textarea{resize:vertical;min-height:55px}
+.f input::placeholder,.f textarea::placeholder,.ev-form-inline input::placeholder,.ev-form-inline textarea::placeholder{color:var(--text3)}
+.fsec{margin-bottom:20px}
+.ftitle{font-size:10px;font-family:var(--mono);color:var(--accent);letter-spacing:.07em;text-transform:uppercase;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.rg{display:flex;gap:5px;flex-wrap:wrap}
+.rb{padding:5px 10px;border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:11px;color:var(--text2);background:var(--bg3);transition:all .15s;user-select:none}
+.rb:hover{border-color:var(--border2)}.rb.on{border-color:var(--accent);background:var(--aglow);color:var(--accent2)}
+.id-box{background:var(--aglow);border:1px solid rgba(59,130,246,.25);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.id-prev{font-family:var(--mono);font-size:16px;color:var(--accent2)}
+.ea-modal-wrap{display:flex;flex-direction:column;gap:14px}
+.ea-event-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.ea-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ea-card-title{font-size:12px;font-weight:500;color:var(--text2);display:flex;align-items:center;gap:6px}
+.ea-card-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;border-radius:4px}
+.ea-card-del:hover{color:var(--red);background:var(--rbg)}
+.add-ea-btn{background:var(--bg3);border:1px dashed var(--border2);border-radius:var(--r);padding:10px;text-align:center;cursor:pointer;font-size:12px;color:var(--text3);transition:all .15s}
+.add-ea-btn:hover{border-color:var(--accent);color:var(--accent2)}
+.notif{position:fixed;bottom:18px;right:18px;background:var(--gbg);border:1px solid var(--green);color:var(--green);padding:9px 14px;border-radius:var(--r);font-size:12px;z-index:200;transform:translateY(60px);opacity:0;transition:all .3s}
+.notif.show{transform:translateY(0);opacity:1}.notif.err{background:var(--rbg);border-color:var(--red);color:var(--red)}
+.loading-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--text3)}
+.spin{width:30px;height:30px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen" class="loading-screen">
+  <div class="spin"></div>
+  <div style="font-size:12px">Conectando…</div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen" class="login-shell" style="display:none">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-pill">EAP · BELANTAMAB</div>
+      <div class="login-title">Registro EAP</div>
+      <div class="login-sub">Belantamab Mafodotin · Argentina</div>
+    </div>
+    <div class="login-form">
+      <div>
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="medico@hospital.com">
+      </div>
+      <div>
+        <label>Contraseña</label>
+        <input type="password" id="login-pass" placeholder="••••••••">
+      </div>
+      <div class="login-err" id="login-err"></div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">Ingresar</button>
+    </div>
+    <div class="login-switch">
+      <span id="login-switch-text">¿Primera vez? </span><a onclick="toggleMode()" id="login-switch-link">Crear cuenta</a>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-shell" class="shell" style="display:none">
+  <aside class="sb">
+    <div class="sb-top">
+      <div class="sb-pill"><span class="ld"></span>EN VIVO</div>
+      <div class="sb-title">Belantamab Mafodotin</div>
+      <div class="sb-sub">Registro EAP · Argentina</div>
+    </div>
+    <nav class="nav">
+      <span class="nlbl">Vistas</span>
+      <div class="ni on" onclick="goPage('dash',this)"><span class="ni-dot"></span>Dashboard <span class="ni-cnt" id="cnt-total">—</span></div>
+      <div class="ni" onclick="goPage('pacs',this)"><span class="ni-dot"></span>Pacientes</div>
+      <span class="nlbl">Estado</span>
+      <div class="ni" onclick="goFilter('Activo',this)"><span class="ni-dot" style="background:var(--green)"></span>Activos <span class="ni-cnt" id="cnt-act">—</span></div>
+      <div class="ni" onclick="goFilter('Suspendido',this)"><span class="ni-dot" style="background:var(--amber)"></span>Suspendidos <span class="ni-cnt" id="cnt-sus">—</span></div>
+      <div class="ni" onclick="goFilter('Fallecido',this)"><span class="ni-dot" style="background:var(--text3)"></span>Fallecidos <span class="ni-cnt" id="cnt-fal">—</span></div>
+    </nav>
+    <div class="sb-bot">
+      <div class="user-info">
+        <div class="user-email" id="user-email">—</div>
+        <div class="user-logout" onclick="doLogout()">Cerrar sesión</div>
+      </div>
+      <button class="btn-new" onclick="openNew()">+ Nuevo paciente</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="pv on" id="page-dash">
+      <div class="ph"><div><div class="pt">Dashboard</div><div class="ps">Programa EAP · tiempo real</div></div><div class="hacts"><button class="btn" onclick="doExport()">↓ CSV</button></div></div>
+      <div class="pc">
+        <div class="stats">
+          <div class="sc"><div class="sl">Pacientes</div><div class="sv sv-blue" id="d-total">—</div><div class="ss">En programa EAP</div></div>
+          <div class="sc"><div class="sl">Infusiones totales</div><div class="sv sv-green" id="d-infus">—</div><div class="ss">Administradas</div></div>
+          <div class="sc"><div class="sl">EA oculares</div><div class="sv sv-amber" id="d-ea">—</div><div class="ss">% con al menos 1</div></div>
+          <div class="sc"><div class="sl">Respuesta ≥ MBRP</div><div class="sv sv-purple" id="d-resp">—</div><div class="ss">Mejor respuesta</div></div>
+        </div>
+        <div class="esq-row">
+          <div class="esq-card"><div class="esq-icon vd">Vd</div><div class="esq-body"><div class="esq-name">Bela-Vd</div><div class="esq-combo">+ Bortezomib + Dexametasona</div></div><div class="esq-n vd" id="d-vd">—</div></div>
+          <div class="esq-card"><div class="esq-icon pd">Pd</div><div class="esq-body"><div class="esq-name">Bela-Pd</div><div class="esq-combo">+ Pomalidomida + Dexametasona</div></div><div class="esq-n pd" id="d-pd">—</div></div>
+        </div>
+        <div class="cg">
+          <div class="cc"><div class="ct"><span class="cdot" style="background:var(--green)"></span>Mejor respuesta lograda</div><div class="bc" id="ch-resp"></div></div>
+          <div class="cc"><div class="ct"><span class="cdot" style="background:var(--amber)"></span>EA oculares por grado</div><div class="bc" id="ch-ea"></div></div>
+          <div class="cc"><div class="ct"><span class="cdot" style="background:var(--accent)"></span>Estado actual</div><div class="bc" id="ch-estado"></div></div>
+          <div class="cc"><div class="ct"><span class="cdot" style="background:var(--purple)"></span>R-ISS al diagnóstico</div><div class="bc" id="ch-riss"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv" id="page-pacs">
+      <div class="ph"><div><div class="pt">Pacientes</div><div class="ps">Clic para ver historial y gráficos</div></div><div class="hacts"><button class="btn btn-p" onclick="openNew()">+ Nuevo paciente</button></div></div>
+      <div class="pc">
+        <div class="search-row">
+          <input class="si" id="search-in" placeholder="Buscar…" oninput="doSearch(this.value)">
+          <select class="si" style="width:auto;flex:0 0 auto" onchange="doFilter(this.value)"><option value="">Todos</option><option>Activo</option><option>Suspendido</option><option>Fallecido</option></select>
+        </div>
+        <div class="pat-grid" id="pat-grid"></div>
+      </div>
+    </div>
+
+    <div class="pv" id="page-detail">
+      <div class="ph">
+        <div><div class="pt" id="detail-title">Paciente</div><div class="ps" id="detail-sub"></div></div>
+        <div class="hacts"><button class="btn" onclick="goPage('pacs',null)">← Volver</button><button class="btn btn-p" id="btn-edit-base" onclick="openEditBase()" style="display:none">✏ Editar</button></div>
+      </div>
+      <div class="pc">
+        <div class="detail-header">
+          <div class="dh-id" id="dh-id"></div>
+          <div class="dh-name" id="dh-name"></div>
+          <div class="dh-inst" id="dh-inst"></div>
+          <div class="dh-badges" id="dh-badges"></div>
+          <div class="dh-stats">
+            <div class="dh-stat"><div class="dh-stat-val" id="dhs-infus">—</div><div class="dh-stat-lbl">Infusiones</div></div>
+            <div class="dh-stat"><div class="dh-stat-val" id="dhs-ea">—</div><div class="dh-stat-lbl">EA oculares</div></div>
+            <div class="dh-stat"><div class="dh-stat-val" id="dhs-resp">—</div><div class="dh-stat-lbl">Última respuesta</div></div>
+            <div class="dh-stat"><div class="dh-stat-val" id="dhs-status">—</div><div class="dh-stat-lbl">Estado actual</div></div>
+          </div>
+        </div>
+        <div class="dtabs">
+          <div class="dtab on" onclick="goDetailTab(0,this)">📋 Historial de eventos</div>
+          <div class="dtab" onclick="goDetailTab(1,this)">📈 Gráficos de evolución</div>
+        </div>
+        <div id="dt-0">
+          <div class="tl-wrap">
+            <div class="tl-section">
+              <div class="tl-hdr"><div class="tl-title">Historial</div><span style="font-size:10px;color:var(--text3);font-family:var(--mono)" id="tl-count"></span></div>
+              <div class="tl-body" id="tl-body"></div>
+            </div>
+            <div class="tl-section" id="event-form-panel">
+              <div class="tl-hdr"><div class="tl-title">Registrar evento</div></div>
+              <div class="add-ev">
+                <div class="add-ev-title">Tipo de evento</div>
+                <div class="ev-type-grid">
+                  <div class="ev-type-btn" onclick="selEvType('infusion',this)"><span class="eico">💉</span>Infusión</div>
+                  <div class="ev-type-btn" onclick="selEvType('ea_ocular',this)"><span class="eico">👁</span>EA Ocular</div>
+                  <div class="ev-type-btn" onclick="selEvType('ea_no_ocular',this)"><span class="eico">⚠</span>EA No ocular</div>
+                  <div class="ev-type-btn" onclick="selEvType('respuesta',this)"><span class="eico">📊</span>Respuesta</div>
+                  <div class="ev-type-btn" onclick="selEvType('status',this)"><span class="eico">🔄</span>Cambio estado</div>
+                  <div class="ev-type-btn" onclick="selEvType('nota',this)"><span class="eico">📝</span>Nota clínica</div>
+                </div>
+                <div class="ev-form-inline" id="ev-form"></div>
+                <button class="btn btn-p" style="width:100%;margin-top:10px" onclick="addEvent()">Guardar evento</button>
+              </div>
+            </div>
+            <div class="tl-section" id="readonly-panel" style="display:none">
+              <div class="tl-hdr"><div class="tl-title">Solo lectura</div></div>
+              <div style="padding:20px;font-size:12px;color:var(--text3);line-height:1.6">
+                <div style="color:var(--amber);font-weight:500;margin-bottom:8px">🔒 Paciente de otro médico</div>
+                Este paciente fue cargado por <span id="ro-owner" style="color:var(--accent2)">—</span>.<br><br>
+                Solo el médico creador puede modificar los datos base o registrar nuevos eventos. Podés ver toda la información y gráficos del paciente.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="dt-1" style="display:none">
+          <div class="charts-tab">
+            <div class="chart-card"><div class="chart-card-title"><span class="cdot" style="background:var(--green)"></span>Respuesta en el tiempo</div><canvas id="ch-resp-time" height="110"></canvas></div>
+            <div class="chart-card"><div class="chart-card-title"><span class="cdot" style="background:var(--teal)"></span>Infusiones acumuladas</div><canvas id="ch-infus-time" height="110"></canvas></div>
+            <div class="chart-card"><div class="chart-card-title"><span class="cdot" style="background:var(--amber)"></span>EA oculares en el tiempo</div><canvas id="ch-ea-time" height="110"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="mo" id="modal">
+  <div class="md">
+    <div class="mh">
+      <div><div class="mttl" id="modal-title">Nuevo paciente</div><div class="msub">Belantamab Mafodotin · EAP Argentina</div></div>
+      <button class="mclose" onclick="closeModal()">×</button>
+    </div>
+    <div class="mb">
+      <div id="id-box" class="id-box">
+        <div><div style="font-size:10px;font-family:var(--mono);color:var(--text3);margin-bottom:3px">ID AUTOMÁTICO</div><div class="id-prev" id="next-id">ARG-???</div></div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5">Número asignado por el sistema.<br>No puede modificarse ni repetirse.</div>
+      </div>
+      <div class="tab-steps" id="tab-steps"></div>
+      <div class="tabs2" id="form-tabs">
+        <div class="tab2 on" onclick="goMTab(0)">Identificación</div>
+        <div class="tab2" onclick="goMTab(1)">Diagnóstico</div>
+        <div class="tab2" onclick="goMTab(2)">Tto. previo</div>
+        <div class="tab2" onclick="goMTab(3)">Belantamab</div>
+        <div class="tab2" onclick="goMTab(4)">👁 EA Oculares <span class="tbadge" id="cnt-ea-oc-tab">0</span></div>
+        <div class="tab2" onclick="goMTab(5)">⚠ EA No oculares <span class="tbadge" id="cnt-ea-no-tab">0</span></div>
+        <div class="tab2" onclick="goMTab(6)">📊 Respuesta</div>
+      </div>
+      <div id="mt-0">
+        <div class="fsec"><div class="ftitle">Identificación del paciente</div>
+          <div class="fg">
+            <div class="f"><div class="fl">Iniciales <span class="req">*</span></div><input id="f-ini" placeholder="J.G.M."></div>
+            <div class="f"><div class="fl">Fecha de nacimiento</div><input type="date" id="f-fnac"></div>
+            <div class="f"><div class="fl">Sexo</div><select id="f-sexo"><option value="">Sel.</option><option>Femenino</option><option>Masculino</option></select></div>
+            <div class="f"><div class="fl">Institución <span class="req">*</span></div><input id="f-inst" placeholder="Hospital / Clínica"></div>
+            <div class="f"><div class="fl">Médico tratante</div><input id="f-med"></div>
+            <div class="f"><div class="fl">Cobertura</div><select id="f-cob"><option value="">Sel.</option><option>Público</option><option>Privado / OS</option></select></div>
+          </div>
+        </div>
+        <div class="fsec"><div class="ftitle">ECOG basal</div>
+          <div class="rg" id="rg-ecog">
+            <div class="rb" data-v="0" onclick="sr('rg-ecog',this)">ECOG 0</div><div class="rb" data-v="1" onclick="sr('rg-ecog',this)">ECOG 1</div>
+            <div class="rb" data-v="2" onclick="sr('rg-ecog',this)">ECOG 2</div><div class="rb" data-v="3" onclick="sr('rg-ecog',this)">ECOG 3</div>
+            <div class="rb" data-v="4" onclick="sr('rg-ecog',this)">ECOG 4</div>
+          </div>
+        </div>
+      </div>
+      <div id="mt-1" style="display:none">
+        <div class="fsec"><div class="ftitle">Diagnóstico</div>
+          <div class="fg">
+            <div class="f"><div class="fl">Fecha de diagnóstico</div><input type="date" id="f-fdx"></div>
+            <div class="f"><div class="fl">Componente M</div><select id="f-compm"><option value="">Sel.</option><option>IgG Kappa</option><option>IgG Lambda</option><option>IgA Kappa</option><option>IgA Lambda</option><option>IgD</option><option>CL Kappa</option><option>CL Lambda</option><option>No secretor</option><option>Otro</option></select></div>
+            <div class="f"><div class="fl">R-ISS</div><select id="f-riss"><option value="">Sel.</option><option>R-ISS I</option><option>R-ISS II</option><option>R-ISS III</option><option>Sin dato</option></select></div>
+            <div class="f"><div class="fl">Citogenética</div><select id="f-cito"><option value="">Sel.</option><option>del(17p)</option><option>t(4;14)</option><option>t(14;16)</option><option>t(14;20)</option><option>gain(1q)</option><option>Riesgo estándar</option><option>Sin dato</option></select></div>
+          </div>
+        </div>
+        <div class="fsec"><div class="ftitle">Criterios CRAB</div>
+          <div class="fg3">
+            <div class="f"><div class="fl">Hipercalcemia</div><div class="rg" id="rg-hiper"><div class="rb" data-v="Si" onclick="sr('rg-hiper',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-hiper',this)">No</div></div></div>
+            <div class="f"><div class="fl">Ins. renal</div><div class="rg" id="rg-renal"><div class="rb" data-v="Si" onclick="sr('rg-renal',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-renal',this)">No</div></div></div>
+            <div class="f"><div class="fl">Anemia</div><div class="rg" id="rg-anemia"><div class="rb" data-v="Si" onclick="sr('rg-anemia',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-anemia',this)">No</div></div></div>
+            <div class="f"><div class="fl">Lesiones óseas</div><div class="rg" id="rg-oseas"><div class="rb" data-v="Si" onclick="sr('rg-oseas',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-oseas',this)">No</div></div></div>
+            <div class="f"><div class="fl">Extramedular</div><div class="rg" id="rg-extra"><div class="rb" data-v="Si" onclick="sr('rg-extra',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-extra',this)">No</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div id="mt-2" style="display:none">
+        <div class="fsec"><div class="ftitle">Líneas de tratamiento previas</div>
+          <div class="fg">
+            <div class="f"><div class="fl">N° LOT previas</div><input type="number" id="f-lot" min="1" max="20" placeholder="ej: 4"></div>
+            <div class="f"><div class="fl">TAMO</div><div class="rg" id="rg-tamo"><div class="rb" data-v="Si" onclick="sr('rg-tamo',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-tamo',this)">No</div><div class="rb" data-v="NC" onclick="sr('rg-tamo',this)">NC</div></div></div>
+            <div class="f"><div class="fl">Esquema última LOT</div><input id="f-ulot" placeholder="ej: Dara-Pd"></div>
+            <div class="f"><div class="fl">Sensible / resistente</div><div class="rg" id="rg-sens"><div class="rb" data-v="Sensible" onclick="sr('rg-sens',this)">Sensible</div><div class="rb" data-v="Resistente" onclick="sr('rg-sens',this)">Resistente</div><div class="rb" data-v="Recaída" onclick="sr('rg-sens',this)">Recaída</div></div></div>
+          </div>
+        </div>
+        <div class="fsec"><div class="ftitle">Exposición previa</div>
+          <div class="fg3">
+            <div class="f"><div class="fl">Anti-CD38</div><div class="rg" id="rg-cd38"><div class="rb" data-v="Si" onclick="sr('rg-cd38',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-cd38',this)">No</div></div></div>
+            <div class="f"><div class="fl">IMiD</div><div class="rg" id="rg-imid"><div class="rb" data-v="Si" onclick="sr('rg-imid',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-imid',this)">No</div></div></div>
+            <div class="f"><div class="fl">IP</div><div class="rg" id="rg-ip"><div class="rb" data-v="Si" onclick="sr('rg-ip',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-ip',this)">No</div></div></div>
+            <div class="f"><div class="fl">Teclistamab</div><div class="rg" id="rg-teclista"><div class="rb" data-v="Si" onclick="sr('rg-teclista',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-teclista',this)">No</div></div></div>
+            <div class="f"><div class="fl">CAR-T</div><div class="rg" id="rg-cart"><div class="rb" data-v="Si" onclick="sr('rg-cart',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-cart',this)">No</div></div></div>
+            <div class="f"><div class="fl">Talquetamab</div><div class="rg" id="rg-talq"><div class="rb" data-v="Si" onclick="sr('rg-talq',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-talq',this)">No</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div id="mt-3" style="display:none">
+        <div class="fsec"><div class="ftitle">Esquema de tratamiento</div>
+          <div class="fg">
+            <div class="f s2">
+              <div class="fl">Combinación <span class="req">*</span></div>
+              <div class="rg" id="rg-esq">
+                <div class="rb" data-v="Bela-Vd (+ Bortezomib + Dexametasona)" onclick="sr('rg-esq',this)">Bela + Bortezomib + Dexa (Bela-Vd)</div>
+                <div class="rb" data-v="Bela-Pd (+ Pomalidomida + Dexametasona)" onclick="sr('rg-esq',this)">Bela + Pomalidomida + Dexa (Bela-Pd)</div>
+              </div>
+            </div>
+            <div class="f"><div class="fl">Dosis inicial</div><select id="f-dosis"><option value="">Sel.</option><option>2.5 mg/kg c/3 sem</option><option>1.9 mg/kg c/3 sem</option><option>1.0 mg/kg c/3 sem</option><option>2.5 mg/kg c/4 sem</option></select></div>
+            <div class="f"><div class="fl">Fecha de inicio</div><input type="date" id="f-finicio"></div>
+          </div>
+        </div>
+        <div class="fsec"><div class="ftitle">Estado actual</div>
+          <div class="fg">
+            <div class="f"><div class="fl">Status</div><div class="rg" id="rg-status"><div class="rb" data-v="Activo" onclick="sr('rg-status',this)">Activo</div><div class="rb" data-v="Suspendido" onclick="sr('rg-status',this)">Suspendido</div><div class="rb" data-v="Fallecido" onclick="sr('rg-status',this)">Fallecido</div></div></div>
+            <div class="f"><div class="fl">N° de ciclos recibidos</div><input type="number" id="f-ciclos" min="1" placeholder="ej: 6"></div>
+            <div class="f"><div class="fl">¿Reducción de dosis?</div><div class="rg" id="rg-reduc"><div class="rb" data-v="Si" onclick="sr('rg-reduc',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-reduc',this)">No</div></div></div>
+            <div class="f"><div class="fl">Fecha último contacto</div><input type="date" id="f-ult"></div>
+          </div>
+        </div>
+      </div>
+      <div id="mt-4" style="display:none">
+        <div class="fsec">
+          <div class="ftitle">Eventos adversos oculares (NCI-CTCAE)</div>
+          <p style="font-size:12px;color:var(--text3);margin-bottom:14px">Registrá cada evento por separado con su fecha.</p>
+          <div class="ea-modal-wrap" id="ea-oc-list"></div>
+          <div class="add-ea-btn" onclick="addEAOcCard()">+ Agregar evento ocular</div>
+        </div>
+      </div>
+      <div id="mt-5" style="display:none">
+        <div class="fsec">
+          <div class="ftitle">Eventos adversos no oculares (NCI-CTCAE)</div>
+          <p style="font-size:12px;color:var(--text3);margin-bottom:14px">Registrá cada evento por separado con su fecha.</p>
+          <div class="ea-modal-wrap" id="ea-no-list"></div>
+          <div class="add-ea-btn" onclick="addEANoCard()">+ Agregar EA no ocular</div>
+        </div>
+      </div>
+      <div id="mt-6" style="display:none">
+        <div class="fsec"><div class="ftitle">Mejor respuesta lograda</div>
+          <div class="rg" id="rg-resp" style="flex-wrap:wrap;margin-bottom:4px">
+            <div class="rb" data-v="RC estricta" onclick="sr('rg-resp',this)">RC estricta</div>
+            <div class="rb" data-v="RC" onclick="sr('rg-resp',this)">RC</div>
+            <div class="rb" data-v="MBRP" onclick="sr('rg-resp',this)">MBRP</div>
+            <div class="rb" data-v="RP" onclick="sr('rg-resp',this)">RP</div>
+            <div class="rb" data-v="RP mínima" onclick="sr('rg-resp',this)">RP mínima</div>
+            <div class="rb" data-v="Enfermedad estable" onclick="sr('rg-resp',this)">Enfermedad estable</div>
+            <div class="rb" data-v="Progresión" onclick="sr('rg-resp',this)">Progresión</div>
+            <div class="rb" data-v="No evaluable" onclick="sr('rg-resp',this)">No evaluable</div>
+          </div>
+        </div>
+        <div class="fsec"><div class="ftitle">Seguimiento</div>
+          <div class="fg">
+            <div class="f"><div class="fl">EMR</div><div class="rg" id="rg-emr"><div class="rb" data-v="Negativa" onclick="sr('rg-emr',this)">Negativa</div><div class="rb" data-v="Positiva" onclick="sr('rg-emr',this)">Positiva</div><div class="rb" data-v="No realizada" onclick="sr('rg-emr',this)">No realizada</div></div></div>
+            <div class="f"><div class="fl">¿Recaída post-Belantamab?</div><div class="rg" id="rg-recaid"><div class="rb" data-v="Si" onclick="sr('rg-recaid',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-recaid',this)">No</div><div class="rb" data-v="En curso" onclick="sr('rg-recaid',this)">En curso</div></div></div>
+            <div class="f"><div class="fl">Tratamiento post-Belantamab</div><input id="f-post" placeholder="ej: Teclistamab"></div>
+            <div class="f"><div class="fl">¿Paciente vivo?</div><div class="rg" id="rg-vivo"><div class="rb" data-v="Si" onclick="sr('rg-vivo',this)">Sí</div><div class="rb" data-v="No" onclick="sr('rg-vivo',this)">No (fallecido)</div></div></div>
+            <div class="f s2"><div class="fl">Comentarios</div><textarea id="f-coment" placeholder="Observaciones…"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <div style="font-size:11px;color:var(--text3)">Datos en base de datos cloud · auditoría por usuario</div>
+      <div class="mf-r">
+        <button class="btn" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-p" id="msave" onclick="saveBase()">Guardar paciente</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import { getFirestore, collection, doc, setDoc, updateDoc, onSnapshot, serverTimestamp, query, orderBy, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC87vsfrNMKflfBrBBYisZO9xDb-eCko_Q",
+  authDomain: "bela-eap-registro-e91ba.firebaseapp.com",
+  projectId: "bela-eap-registro-e91ba",
+  storageBucket: "bela-eap-registro-e91ba.firebasestorage.app",
+  messagingSenderId: "368078078718",
+  appId: "1:368078078718:web:ebb67bfcfb793ee0869baf",
+  measurementId: "G-2BP2ZEKBPJ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.fb = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, collection, doc, setDoc, updateDoc, onSnapshot, serverTimestamp, query, orderBy, getDoc, runTransaction };
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    window.currentUser = user;
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-shell').style.display = 'grid';
+    document.getElementById('user-email').textContent = user.email;
+    window.initApp();
+  } else {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app-shell').style.display = 'none';
+  }
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<script>
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+let isRegisterMode = false;
+
+function toggleMode() {
+  isRegisterMode = !isRegisterMode;
+  document.getElementById('login-btn').textContent = isRegisterMode ? 'Crear cuenta' : 'Ingresar';
+  document.getElementById('login-switch-text').textContent = isRegisterMode ? '¿Ya tenés cuenta? ' : '¿Primera vez? ';
+  document.getElementById('login-switch-link').textContent = isRegisterMode ? 'Iniciar sesión' : 'Crear cuenta';
+  document.getElementById('login-err').classList.remove('show');
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-err');
+  errEl.classList.remove('show');
+  if (!email || !pass) { errEl.textContent = 'Completá email y contraseña'; errEl.classList.add('show'); return; }
+  if (pass.length < 6) { errEl.textContent = 'La contraseña debe tener al menos 6 caracteres'; errEl.classList.add('show'); return; }
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = isRegisterMode ? 'Creando…' : 'Ingresando…';
+  try {
+    if (isRegisterMode) await window.fb.createUserWithEmailAndPassword(window.fb.auth, email, pass);
+    else await window.fb.signInWithEmailAndPassword(window.fb.auth, email, pass);
+  } catch (e) {
+    const msgs = {
+      'auth/invalid-email': 'Email inválido',
+      'auth/user-not-found': 'No existe una cuenta con ese email',
+      'auth/wrong-password': 'Contraseña incorrecta',
+      'auth/invalid-credential': 'Email o contraseña incorrectos',
+      'auth/email-already-in-use': 'Ya existe una cuenta con ese email',
+      'auth/weak-password': 'La contraseña es muy débil (mínimo 6 caracteres)',
+    };
+    errEl.textContent = msgs[e.code] || 'Error: ' + e.message;
+    errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = isRegisterMode ? 'Crear cuenta' : 'Ingresar';
+  }
+}
+
+function doLogout() {
+  if (confirm('¿Cerrar sesión?')) window.fb.signOut(window.fb.auth);
+}
+
+window.toggleMode = toggleMode;
+window.doLogin = doLogin;
+window.doLogout = doLogout;
+
+// ── APP STATE ────────────────────────────────────────────────────────────────
+let patients = [], fSearch = '', fStatus = '', currentPat = null, editMode = false, currentEvType = null;
+const rv = {};
+let charts = {};
+let eaOcCards = [], eaNoCards = [], eaOcCounter = 0, eaNoCounter = 0;
+let unsubscribe = null;
+
+// ── INIT (called after login) ────────────────────────────────────────────────
+window.initApp = function() {
+  if (unsubscribe) unsubscribe();
+  const q = window.fb.query(window.fb.collection(window.fb.db, 'patients'), window.fb.orderBy('created', 'desc'));
+  unsubscribe = window.fb.onSnapshot(q, snap => {
+    patients = [];
+    snap.forEach(doc => patients.push({ docId: doc.id, ...doc.data() }));
+    renderAll();
+  }, err => {
+    console.error('Firestore error:', err);
+    showNotif('Error de conexión: ' + err.message, 'err');
+  });
+};
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function latestStatus(p){const ev=(p.events||[]).filter(e=>e.type==='status').sort((a,b)=>b.date.localeCompare(a.date));return ev.length?ev[0].status:(p.status_base||'Activo')}
+function latestResp(p){const ev=(p.events||[]).filter(e=>e.type==='respuesta').sort((a,b)=>b.date.localeCompare(a.date));if(ev.length)return ev[0].respuesta;return p.resp_base||'—'}
+function countInfus(p){return(p.events||[]).filter(e=>e.type==='infusion').length}
+function countEAOc(p){return(p.events||[]).filter(e=>e.type==='ea_ocular').length}
+function fmtDate(d){if(!d)return'—';const[y,m,day]=d.split('-');const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];return`${day} ${ms[parseInt(m)-1]} ${y}`}
+function respScore(r){const m={'RC estricta':6,'RC':5,'MBRP':4,'RP':3,'RP mínima':2,'Enfermedad estable':1,'Progresión':0};return m[r]??null}
+function respLabel(s){const m={6:'RC estricta',5:'RC',4:'MBRP',3:'RP',2:'RP mín.',1:'Estable',0:'PD'};return m[s]??'—'}
+
+function renderAll(){updateSidebar();updateDashboard();renderPatList();if(currentPat){const p=patients.find(x=>x.docId===currentPat);if(p)renderDetail(p)}}
+
+function updateSidebar(){
+  document.getElementById('cnt-total').textContent=patients.length;
+  document.getElementById('cnt-act').textContent=patients.filter(p=>latestStatus(p)==='Activo').length;
+  document.getElementById('cnt-sus').textContent=patients.filter(p=>latestStatus(p)==='Suspendido').length;
+  document.getElementById('cnt-fal').textContent=patients.filter(p=>latestStatus(p)==='Fallecido').length;
+}
+function barChart(el,rows,tot){if(!el)return;const mx=tot||Math.max(...rows.map(r=>r.n),1);el.innerHTML=rows.map(r=>`<div class="br"><div class="bl">${r.label}</div><div class="bt"><div class="bf" style="width:${Math.round(r.n/mx*100)}%;background:${r.color}"></div></div><div class="bv">${r.n}</div></div>`).join('')}
+function cnt(fn){return patients.filter(fn).length}
+function pct(n,d){return d?Math.round(n/d*100)+'%':'—'}
+
+function updateDashboard(){
+  const n=patients.length;
+  document.getElementById('d-total').textContent=n||'0';
+  document.getElementById('d-infus').textContent=patients.reduce((s,p)=>s+countInfus(p),0)||'0';
+  document.getElementById('d-ea').textContent=pct(patients.filter(p=>countEAOc(p)>0).length,n);
+  document.getElementById('d-resp').textContent=pct(patients.filter(p=>['RC estricta','RC','MBRP'].includes(latestResp(p))).length,n);
+  document.getElementById('d-vd').textContent=patients.filter(p=>(p.esq||'').startsWith('Bela-Vd')).length;
+  document.getElementById('d-pd').textContent=patients.filter(p=>(p.esq||'').startsWith('Bela-Pd')).length;
+  barChart(document.getElementById('ch-resp'),[
+    {label:'RC estricta',n:cnt(p=>latestResp(p)==='RC estricta'),color:'#10b981'},
+    {label:'RC',n:cnt(p=>latestResp(p)==='RC'),color:'#10b981'},
+    {label:'MBRP',n:cnt(p=>latestResp(p)==='MBRP'),color:'#5bb8a0'},
+    {label:'RP',n:cnt(p=>latestResp(p)==='RP'),color:'#3b82f6'},
+    {label:'RP mínima',n:cnt(p=>latestResp(p)==='RP mínima'),color:'#f59e0b'},
+    {label:'Progresión',n:cnt(p=>latestResp(p)==='Progresión'),color:'#ef4444'},
+  ],n||1);
+  const gc=g=>patients.filter(p=>(p.events||[]).some(e=>e.type==='ea_ocular'&&e.grado===g)).length;
+  barChart(document.getElementById('ch-ea'),[
+    {label:'Grado 1',n:gc('Grado 1 – leve'),color:'#10b981'},{label:'Grado 2',n:gc('Grado 2 – moderado'),color:'#f59e0b'},
+    {label:'Grado 3',n:gc('Grado 3 – grave'),color:'#e07a30'},{label:'Grado 4',n:gc('Grado 4 – riesgo vital'),color:'#ef4444'},
+  ],n||1);
+  barChart(document.getElementById('ch-estado'),[
+    {label:'Activo',n:cnt(p=>latestStatus(p)==='Activo'),color:'#10b981'},
+    {label:'Suspendido',n:cnt(p=>latestStatus(p)==='Suspendido'),color:'#f59e0b'},
+    {label:'Fallecido',n:cnt(p=>latestStatus(p)==='Fallecido'),color:'#6b7280'},
+  ],n||1);
+  barChart(document.getElementById('ch-riss'),[
+    {label:'R-ISS I',n:cnt(p=>p.riss==='R-ISS I'),color:'#10b981'},
+    {label:'R-ISS II',n:cnt(p=>p.riss==='R-ISS II'),color:'#3b82f6'},
+    {label:'R-ISS III',n:cnt(p=>p.riss==='R-ISS III'),color:'#ef4444'},
+    {label:'Sin dato',n:cnt(p=>!p.riss||p.riss==='Sin dato'),color:'#4b5f7c'},
+  ],n||1);
+}
+
+function filtered(){
+  return patients.filter(p=>{
+    const q=fSearch.toLowerCase();
+    const mq=!q||(p.id||'').toLowerCase().includes(q)||(p.ini||'').toLowerCase().includes(q)||(p.inst||'').toLowerCase().includes(q)||(p.medico||'').toLowerCase().includes(q);
+    return mq&&(!fStatus||latestStatus(p)===fStatus);
+  });
+}
+function sbadge(s){return s==='Activo'?'bg':s==='Suspendido'?'ba':'bgr'}
+function rbadge(r){return['RC estricta','RC','MBRP'].includes(r)?'bg':r==='Progresión'?'br2':'bb'}
+
+function renderPatList(){
+  const list=filtered(),g=document.getElementById('pat-grid');
+  const myEmail=window.currentUser?.email||'';
+  if(!list.length){g.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)">Sin pacientes aún. Usá "+ Nuevo paciente" para agregar el primero.</div>';return}
+  g.innerHTML=list.map(p=>{
+    const st=latestStatus(p),resp=latestResp(p),inf=countInfus(p),eaoc=countEAOc(p);
+    const esq=(p.esq||'').startsWith('Bela-Vd')?'Bela-Vd':(p.esq||'').startsWith('Bela-Pd')?'Bela-Pd':'—';
+    const isOwner=p.created_by===myEmail;
+    const ownerTag=isOwner?'<span class="badge bg" style="font-size:10px">✓ tuyo</span>':'';
+    return`<div class="pat-row" onclick="openDetail('${p.docId}')" style="${isOwner?'border-left:2px solid var(--green)':''}">
+      <div class="pat-id">${p.id}</div>
+      <div style="flex:1"><div class="pat-name">${p.ini||'—'} ${ownerTag}</div><div class="pat-inst">${p.inst||'—'} · ${p.medico||'—'}</div></div>
+      <div class="pat-meta">
+        <span class="badge bpu">${p.riss||'—'}</span>
+        <span class="badge bteal">${esq}</span>
+        <span class="pat-infus">💉 ${inf}</span>
+        ${eaoc>0?`<span class="badge ba">👁 ${eaoc} EA oc.</span>`:''}
+        <span class="badge ${rbadge(resp)}">${resp}</span>
+        <span class="badge ${sbadge(st)}">${st}</span>
+      </div>
+      <div style="color:var(--text3);font-size:14px">›</div>
+    </div>`;
+  }).join('');
+}
+
+function openDetail(docId){currentPat=docId;const p=patients.find(x=>x.docId===docId);if(!p)return;renderDetail(p);goPage('detail',null)}
+
+function renderDetail(p){
+  document.getElementById('detail-title').textContent=p.ini||p.id;
+  document.getElementById('detail-sub').textContent=(p.id||'')+' · '+(p.inst||'');
+  document.getElementById('dh-id').textContent=p.id;
+  document.getElementById('dh-name').textContent=p.ini||'—';
+  document.getElementById('dh-inst').textContent=(p.inst||'—')+' · '+(p.medico||'');
+  const esq=(p.esq||'').startsWith('Bela-Vd')?'Bela-Vd':(p.esq||'').startsWith('Bela-Pd')?'Bela-Pd':'—';
+  
+  // Ownership check
+  const myEmail=window.currentUser?.email||'';
+  const isOwner=p.created_by===myEmail;
+  const ownerLabel=p.created_by?p.created_by.split('@')[0]:'—';
+  
+  let ownerBadge='';
+  if(isOwner){
+    ownerBadge=`<span class="badge bg" title="Sos el creador de este paciente">✓ Tu paciente</span>`;
+  } else {
+    ownerBadge=`<span class="badge ba" title="Creado por ${p.created_by||'—'}">🔒 de ${ownerLabel}</span>`;
+  }
+  
+  document.getElementById('dh-badges').innerHTML=ownerBadge+`<span class="badge bpu">${p.riss||'—'}</span><span class="badge bteal">${esq}</span><span class="badge bgr">${p.dosis||'—'}</span><span class="badge bgr">LOT prev: ${p.lot||'—'}</span><span class="badge bgr">ECOG ${p.ecog||'—'}</span>`;
+  document.getElementById('dhs-infus').textContent=countInfus(p);
+  document.getElementById('dhs-ea').textContent=countEAOc(p);
+  document.getElementById('dhs-resp').textContent=latestResp(p);
+  document.getElementById('dhs-status').textContent=latestStatus(p);
+  
+  // Show/hide edit button and form panel based on ownership
+  document.getElementById('btn-edit-base').style.display=isOwner?'inline-block':'none';
+  document.getElementById('event-form-panel').style.display=isOwner?'block':'none';
+  document.getElementById('readonly-panel').style.display=isOwner?'none':'block';
+  if(!isOwner){
+    document.getElementById('ro-owner').textContent=p.created_by||'otro médico';
+  }
+  
+  renderTimeline(p);
+}
+
+function renderTimeline(p){
+  const events=(p.events||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+  const tl=document.getElementById('tl-body');
+  document.getElementById('tl-count').textContent=events.length+' eventos';
+  if(!events.length){tl.innerHTML='<div class="tl-empty">Sin eventos. Registrá el primero →</div>';return}
+  const icons={infusion:'💉',ea_ocular:'👁',ea_no_ocular:'⚠',respuesta:'📊',status:'🔄',nota:'📝'};
+  const labels={infusion:'Infusión',ea_ocular:'EA Ocular',ea_no_ocular:'EA No ocular',respuesta:'Respuesta',status:'Cambio estado',nota:'Nota clínica'};
+  tl.innerHTML=`<div class="ev-list">${events.map(ev=>{
+    let desc='',detail='';
+    if(ev.type==='infusion'){desc=`Infusión #${ev.num_infusion||'?'} · ${ev.dosis||'—'}`;detail=ev.observaciones||''}
+    else if(ev.type==='ea_ocular'){desc=`${ev.tipo||'—'} · ${ev.grado||'—'}`;detail=`Resolvió: ${ev.resolvio||'—'}${ev.lagr==='Si'?' · Lágrimas art.':''}${ev.observaciones?' · '+ev.observaciones:''}`}
+    else if(ev.type==='ea_no_ocular'){desc=`${ev.tipo||'—'} · ${ev.grado||'—'}`;detail=ev.observaciones||''}
+    else if(ev.type==='respuesta'){desc=ev.respuesta||'—';detail=`${ev.emr?'EMR: '+ev.emr:''}${ev.observaciones?' · '+ev.observaciones:''}`}
+    else if(ev.type==='status'){desc=ev.causa||ev.status||'—';detail=ev.observaciones||''}
+    else if(ev.type==='nota'){desc=ev.observaciones||'—'}
+    const author=ev.created_by?`<span class="ev-author">· por ${ev.created_by.split('@')[0]}</span>`:'';
+    return`<div class="ev-item"><div class="ev-dot ${ev.type}">${icons[ev.type]||'•'}</div><div class="ev-content"><div class="ev-date">${fmtDate(ev.date)} ${author}</div><div class="ev-type-lbl ${ev.type}">${labels[ev.type]||ev.type}</div><div class="ev-desc">${desc}</div>${detail?`<div class="ev-detail">${detail}</div>`:''}</div></div>`;
+  }).join('')}</div>`;
+}
+
+function goDetailTab(i,el){
+  document.getElementById('dt-0').style.display=i===0?'block':'none';
+  document.getElementById('dt-1').style.display=i===1?'block':'none';
+  document.querySelectorAll('.dtab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  if(i===1){const p=patients.find(x=>x.docId===currentPat);if(p)renderPatientCharts(p)}
+}
+
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id]}}
+function renderPatientCharts(p){
+  const events=(p.events||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  Chart.defaults.color='#94a3b8';Chart.defaults.borderColor='#1e2d45';Chart.defaults.font.family='IBM Plex Sans';Chart.defaults.font.size=11;
+  destroyChart('resp');destroyChart('infus');destroyChart('ea');
+  const respEvs=events.filter(e=>e.type==='respuesta'&&respScore(e.respuesta)!==null);
+  if(respEvs.length){
+    const c=document.getElementById('ch-resp-time').getContext('2d');
+    charts.resp=new Chart(c,{type:'line',data:{datasets:[{data:respEvs.map(e=>({x:e.date,y:respScore(e.respuesta)})),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.15)',pointBackgroundColor:'#10b981',pointRadius:6,tension:.3,fill:true,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.raw.x}: ${respLabel(ctx.raw.y)}`}}},scales:{x:{type:'category',ticks:{maxTicksLimit:8}},y:{min:0,max:6,ticks:{callback:v=>respLabel(v),stepSize:1}}}}});
+  }
+  const infEvs=events.filter(e=>e.type==='infusion');
+  if(infEvs.length){
+    const c=document.getElementById('ch-infus-time').getContext('2d');
+    charts.infus=new Chart(c,{type:'bar',data:{labels:infEvs.map(e=>e.date),datasets:[{type:'bar',data:infEvs.map(()=>1),backgroundColor:'rgba(6,182,212,.25)',borderColor:'#06b6d4',borderWidth:1,label:'Infusión'},{type:'line',data:infEvs.map((_,i)=>i+1),borderColor:'#06b6d4',backgroundColor:'transparent',pointBackgroundColor:'#06b6d4',pointRadius:4,tension:.3,borderWidth:2,label:'Acumulado',yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:10}},y:{display:false,max:2},y2:{position:'right',min:0,ticks:{stepSize:1},grid:{drawOnChartArea:false}}}}});
+  }
+  const eaEvs=events.filter(e=>e.type==='ea_ocular');
+  const gm={'Grado 1 – leve':1,'Grado 2 – moderado':2,'Grado 3 – grave':3,'Grado 4 – riesgo vital':4};
+  const gc={1:'#10b981',2:'#f59e0b',3:'#e07a30',4:'#ef4444'};
+  if(eaEvs.length){
+    const c=document.getElementById('ch-ea-time').getContext('2d');
+    charts.ea=new Chart(c,{type:'scatter',data:{datasets:[1,2,3,4].map(g=>({label:'G'+g,data:eaEvs.filter(e=>gm[e.grado]===g).map(e=>({x:e.date,y:g,tipo:e.tipo,resolvio:e.resolvio})),backgroundColor:gc[g],pointRadius:8,pointHoverRadius:10})).filter(d=>d.data.length>0)},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,padding:10}},tooltip:{callbacks:{label:ctx=>`${ctx.raw.x} · G${ctx.raw.y} · ${ctx.raw.tipo||'—'}`}}},scales:{x:{type:'category',ticks:{maxTicksLimit:8}},y:{min:0,max:5,ticks:{stepSize:1,callback:v=>v?'G'+v:''}}}}});
+  }
+}
+
+function addEAOcCard(){eaOcCards.push({id:++eaOcCounter});renderEAOcList();updateEATabCounts()}
+function removeEAOcCard(id){eaOcCards=eaOcCards.filter(c=>c.id!==id);renderEAOcList();updateEATabCounts()}
+function renderEAOcList(){
+  const cont=document.getElementById('ea-oc-list');
+  if(!eaOcCards.length){cont.innerHTML='';return}
+  cont.innerHTML=eaOcCards.map((c,i)=>`<div class="ea-event-card"><div class="ea-card-hdr"><div class="ea-card-title">👁 EA Ocular #${i+1}</div><button class="ea-card-del" onclick="removeEAOcCard(${c.id})">×</button></div><div class="fg"><div class="f"><div class="fl">Fecha</div><input type="date" id="eaoc-date-${c.id}" value="${new Date().toISOString().slice(0,10)}"></div><div class="f"><div class="fl">Tipo</div><select id="eaoc-tipo-${c.id}"><option value="">Sel.</option><option>Queratopatía microquística</option><option>Visión borrosa</option><option>Ojo seco</option><option>Dolor ocular</option><option>Reducción AVMC (BCVA)</option><option>Fotofobia</option><option>Otro</option></select></div><div class="f"><div class="fl">Grado</div><select id="eaoc-grado-${c.id}"><option value="">Sel.</option><option>Grado 1 – leve</option><option>Grado 2 – moderado</option><option>Grado 3 – grave</option><option>Grado 4 – riesgo vital</option></select></div><div class="f"><div class="fl">¿Resolvió?</div><select id="eaoc-resol-${c.id}"><option value="">Sel.</option><option>Sí</option><option>Parcial</option><option>No</option><option>En curso</option></select></div><div class="f"><div class="fl">Lágrimas art.</div><select id="eaoc-lagr-${c.id}"><option value="">Sel.</option><option>Sí</option><option>No</option></select></div><div class="f"><div class="fl">Obs.</div><input id="eaoc-obs-${c.id}" placeholder="Descripción…"></div></div></div>`).join('');
+}
+function addEANoCard(){eaNoCards.push({id:++eaNoCounter});renderEANoList();updateEATabCounts()}
+function removeEANoCard(id){eaNoCards=eaNoCards.filter(c=>c.id!==id);renderEANoList();updateEATabCounts()}
+function renderEANoList(){
+  const cont=document.getElementById('ea-no-list');
+  if(!eaNoCards.length){cont.innerHTML='';return}
+  cont.innerHTML=eaNoCards.map((c,i)=>`<div class="ea-event-card"><div class="ea-card-hdr"><div class="ea-card-title">⚠ EA No ocular #${i+1}</div><button class="ea-card-del" onclick="removeEANoCard(${c.id})">×</button></div><div class="fg"><div class="f"><div class="fl">Fecha</div><input type="date" id="eano-date-${c.id}" value="${new Date().toISOString().slice(0,10)}"></div><div class="f"><div class="fl">Tipo</div><select id="eano-tipo-${c.id}"><option value="">Sel.</option><option>Trombocitopenia</option><option>Anemia</option><option>Neutropenia</option><option>Infección</option><option>Hipogammaglobulinemia</option><option>Neuropatía periférica</option><option>Fatiga</option><option>Otro</option></select></div><div class="f"><div class="fl">Grado</div><select id="eano-grado-${c.id}"><option value="">Sel.</option><option>Grado 1</option><option>Grado 2</option><option>Grado 3</option><option>Grado 4</option></select></div><div class="f"><div class="fl">Obs.</div><input id="eano-obs-${c.id}" placeholder="Manejo…"></div></div></div>`).join('');
+}
+function updateEATabCounts(){document.getElementById('cnt-ea-oc-tab').textContent=eaOcCards.length||'0';document.getElementById('cnt-ea-no-tab').textContent=eaNoCards.length||'0'}
+
+function collectEAEvents(){
+  const events=[],email=window.currentUser?.email||'',now=new Date().toISOString();
+  eaOcCards.forEach(c=>{events.push({type:'ea_ocular',id:'init_'+Date.now()+'_'+c.id,date:document.getElementById(`eaoc-date-${c.id}`)?.value||new Date().toISOString().slice(0,10),tipo:document.getElementById(`eaoc-tipo-${c.id}`)?.value||'',grado:document.getElementById(`eaoc-grado-${c.id}`)?.value||'',resolvio:document.getElementById(`eaoc-resol-${c.id}`)?.value||'',lagr:document.getElementById(`eaoc-lagr-${c.id}`)?.value||'',observaciones:document.getElementById(`eaoc-obs-${c.id}`)?.value||'',created_by:email,created_at:now})});
+  eaNoCards.forEach(c=>{events.push({type:'ea_no_ocular',id:'init_'+Date.now()+'_'+c.id,date:document.getElementById(`eano-date-${c.id}`)?.value||new Date().toISOString().slice(0,10),tipo:document.getElementById(`eano-tipo-${c.id}`)?.value||'',grado:document.getElementById(`eano-grado-${c.id}`)?.value||'',observaciones:document.getElementById(`eano-obs-${c.id}`)?.value||'',created_by:email,created_at:now})});
+  return events;
+}
+
+function goPage(name,el){
+  document.querySelectorAll('.pv').forEach(p=>p.classList.remove('on'));
+  document.getElementById('page-'+name).classList.add('on');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  if(el)el.classList.add('on');
+  if(name==='pacs')renderPatList();
+  if(name!=='detail'){currentPat=null;Object.keys(charts).forEach(k=>{if(charts[k])charts[k].destroy();delete charts[k]})}
+}
+function goFilter(s,el){fStatus=s;fSearch='';document.getElementById('search-in').value='';goPage('pacs',el);renderPatList()}
+function doSearch(v){fSearch=v;renderPatList()}
+function doFilter(v){fStatus=v;renderPatList()}
+
+function resetModal(){Object.keys(rv).forEach(k=>delete rv[k]);document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.f input,.f select,.f textarea').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});eaOcCards=[];eaNoCards=[];eaOcCounter=0;eaNoCounter=0;renderEAOcList();renderEANoList();updateEATabCounts()}
+function setSel(id,v){if(v){const el=document.getElementById(id);if(el)el.value=v}}
+function srVal(g,v){if(!v)return;const b=document.querySelector(`#${g} .rb[data-v="${v}"]`);if(b){b.classList.add('on');rv[g]=v}}
+
+async function peekNextId() {
+  const counterRef = window.fb.doc(window.fb.db, 'meta', 'counter');
+  try {
+    const snap = await window.fb.getDoc(counterRef);
+    const current = snap.exists() ? snap.data().value : 35;
+    return 'ARG-' + String(current + 1).padStart(3, '0');
+  } catch (e) { return 'ARG-???'; }
+}
+
+async function openNew(){
+  editMode=false;resetModal();goMTab(0);
+  document.getElementById('modal-title').textContent='Nuevo paciente';
+  document.getElementById('id-box').style.display='flex';
+  document.getElementById('next-id').textContent=await peekNextId();
+  document.getElementById('msave').textContent='Guardar paciente';
+  document.getElementById('modal').classList.add('open');
+}
+
+function openEditBase(){
+  const p=patients.find(x=>x.docId===currentPat);if(!p)return;
+  editMode=true;resetModal();goMTab(0);
+  document.getElementById('modal-title').textContent='Editar datos base · '+p.id;
+  document.getElementById('id-box').style.display='none';
+  document.getElementById('msave').textContent='Guardar cambios';
+  document.getElementById('f-ini').value=p.ini||'';document.getElementById('f-fnac').value=p.fnac||'';
+  document.getElementById('f-inst').value=p.inst||'';document.getElementById('f-med').value=p.medico||'';
+  setSel('f-sexo',p.sexo);setSel('f-cob',p.cobertura);srVal('rg-ecog',p.ecog);
+  document.getElementById('f-fdx').value=p.fdx||'';
+  setSel('f-compm',p.compm);setSel('f-riss',p.riss);setSel('f-cito',p.cito);
+  srVal('rg-hiper',p.hiper);srVal('rg-renal',p.renal);srVal('rg-anemia',p.anemia_crab);srVal('rg-oseas',p.oseas);srVal('rg-extra',p.extra);
+  document.getElementById('f-lot').value=p.lot||'';srVal('rg-tamo',p.tamo);document.getElementById('f-ulot').value=p.ulot||'';srVal('rg-sens',p.sens);
+  srVal('rg-cd38',p.cd38);srVal('rg-imid',p.imid);srVal('rg-ip',p.ip);srVal('rg-teclista',p.teclista);srVal('rg-cart',p.cart);srVal('rg-talq',p.talq);
+  srVal('rg-esq',p.esq);setSel('f-dosis',p.dosis);document.getElementById('f-finicio').value=p.finicio||'';
+  srVal('rg-status',p.status_base);setSel('f-ciclos',p.ciclos);srVal('rg-reduc',p.reduc);
+  srVal('rg-resp',p.resp_base);srVal('rg-emr',p.emr);srVal('rg-recaid',p.recaida);
+  document.getElementById('f-post').value=p.post||'';srVal('rg-vivo',p.vivo);
+  document.getElementById('f-coment').value=p.coment||'';
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal()});
+
+function goMTab(i){
+  const total=7;
+  for(let j=0;j<total;j++)document.getElementById('mt-'+j).style.display=j===i?'block':'none';
+  document.querySelectorAll('#form-tabs .tab2').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.getElementById('tab-steps').innerHTML=Array.from({length:total},(_,j)=>`<div class="ts ${j<=i?'done':''}"></div>`).join('');
+}
+
+function sr(g,el){document.querySelectorAll('#'+g+' .rb').forEach(b=>b.classList.remove('on'));el.classList.add('on');rv[g]=el.dataset.v}
+
+async function saveBase(){
+  const ini=document.getElementById('f-ini').value.trim(),inst=document.getElementById('f-inst').value.trim();
+  if(!ini||!inst){showNotif('Iniciales e institución son obligatorias','err');return}
+  const btn=document.getElementById('msave');btn.disabled=true;btn.textContent='Guardando…';
+  try{
+    const email=window.currentUser?.email||'unknown';
+    const now=new Date().toISOString();
+    const fnac=document.getElementById('f-fnac').value;
+    const edad=fnac?Math.floor((new Date()-new Date(fnac))/31557600000).toString():'';
+    const fields={ini,inst,edad,fnac,sexo:document.getElementById('f-sexo').value,medico:document.getElementById('f-med').value,cobertura:document.getElementById('f-cob').value,ecog:rv['rg-ecog']||'',fdx:document.getElementById('f-fdx').value,compm:document.getElementById('f-compm').value,riss:document.getElementById('f-riss').value,cito:document.getElementById('f-cito').value,hiper:rv['rg-hiper']||'',renal:rv['rg-renal']||'',anemia_crab:rv['rg-anemia']||'',oseas:rv['rg-oseas']||'',extra:rv['rg-extra']||'',lot:document.getElementById('f-lot').value,tamo:rv['rg-tamo']||'',ulot:document.getElementById('f-ulot').value,sens:rv['rg-sens']||'',cd38:rv['rg-cd38']||'',imid:rv['rg-imid']||'',ip:rv['rg-ip']||'',teclista:rv['rg-teclista']||'',cart:rv['rg-cart']||'',talq:rv['rg-talq']||'',esq:rv['rg-esq']||'',dosis:document.getElementById('f-dosis').value,finicio:document.getElementById('f-finicio').value,status_base:rv['rg-status']||'Activo',ciclos:document.getElementById('f-ciclos').value,reduc:rv['rg-reduc']||'',resp_base:rv['rg-resp']||'',emr:rv['rg-emr']||'',recaida:rv['rg-recaid']||'',post:document.getElementById('f-post').value,vivo:rv['rg-vivo']||'',coment:document.getElementById('f-coment').value,updated_by:email,updated_at:now};
+    const newEAEvents=collectEAEvents();
+
+    if(editMode){
+      const p=patients.find(x=>x.docId===currentPat);
+      // Ownership check - only owner can edit
+      if(p && p.created_by!==email){
+        showNotif('Solo el médico que creó este paciente puede editarlo','err');
+        btn.disabled=false;btn.textContent='Guardar cambios';
+        return;
+      }
+      const existing=p?.events||[];
+      const ref=window.fb.doc(window.fb.db,'patients',currentPat);
+      await window.fb.updateDoc(ref,{...fields,events:[...existing,...newEAEvents]});
+      closeModal();showNotif('✓ Datos actualizados');
+    } else {
+      if(!rv['rg-esq']){showNotif('Seleccioná el esquema en la pestaña Belantamab','err');btn.disabled=false;btn.textContent='Guardar paciente';return}
+      // Get and increment counter atomically
+      const counterRef=window.fb.doc(window.fb.db,'meta','counter');
+      const newNum=await window.fb.runTransaction(window.fb.db, async tx=>{
+        const snap=await tx.get(counterRef);
+        const current=snap.exists()?snap.data().value:35;
+        const next=current+1;
+        tx.set(counterRef,{value:next});
+        return next;
+      });
+      const id='ARG-'+String(newNum).padStart(3,'0');
+      const initEvents=[...newEAEvents];
+      if(rv['rg-status']){initEvents.push({type:'status',id:'init_status',date:fields.finicio||new Date().toISOString().slice(0,10),status:rv['rg-status']||'Activo',causa:'Inicio de tratamiento',observaciones:'',created_by:email,created_at:now})}
+      if(rv['rg-resp']&&rv['rg-resp']!=='No evaluable'){initEvents.push({type:'respuesta',id:'init_resp',date:new Date().toISOString().slice(0,10),respuesta:rv['rg-resp']||'',emr:rv['rg-emr']||'',observaciones:'',created_by:email,created_at:now})}
+      const ref=window.fb.doc(window.fb.db,'patients',id);
+      await window.fb.setDoc(ref,{id,...fields,events:initEvents,created:now,created_by:email});
+      closeModal();showNotif('✓ Paciente '+id+' registrado');
+    }
+  }catch(e){console.error(e);showNotif('Error: '+e.message,'err')}
+  btn.disabled=false;btn.textContent=editMode?'Guardar cambios':'Guardar paciente';
+}
+
+function selEvType(type,el){document.querySelectorAll('.ev-type-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');currentEvType=type;renderEvForm(type)}
+function renderEvForm(type){
+  const p=patients.find(x=>x.docId===currentPat);
+  const num=p?countInfus(p)+1:1;
+  const today=new Date().toISOString().slice(0,10);
+  const forms={
+    infusion:`<div class="f"><div class="fl">Fecha</div><input type="date" id="ev-date" value="${today}"></div><div class="f"><div class="fl">N° infusión</div><input type="number" id="ev-num" value="${num}" min="1"></div><div class="f"><div class="fl">Dosis</div><select id="ev-dosis"><option value="">Sel.</option><option>2.5 mg/kg</option><option>1.9 mg/kg</option><option>1.0 mg/kg</option></select></div><div class="f"><div class="fl">Observaciones</div><textarea id="ev-obs" placeholder="Tolerancia…"></textarea></div>`,
+    ea_ocular:`<div class="f"><div class="fl">Fecha</div><input type="date" id="ev-date" value="${today}"></div><div class="f"><div class="fl">Tipo</div><select id="ev-tipo-oc"><option value="">Sel.</option><option>Queratopatía microquística</option><option>Visión borrosa</option><option>Ojo seco</option><option>Dolor ocular</option><option>Reducción AVMC (BCVA)</option><option>Fotofobia</option><option>Otro</option></select></div><div class="f"><div class="fl">Grado</div><select id="ev-grado"><option value="">Sel.</option><option>Grado 1 – leve</option><option>Grado 2 – moderado</option><option>Grado 3 – grave</option><option>Grado 4 – riesgo vital</option></select></div><div class="f"><div class="fl">¿Resolvió?</div><div class="rg" id="ev-rg-resol"><div class="rb" data-v="Si" onclick="sr('ev-rg-resol',this)">Sí</div><div class="rb" data-v="Parcial" onclick="sr('ev-rg-resol',this)">Parcial</div><div class="rb" data-v="No" onclick="sr('ev-rg-resol',this)">No</div><div class="rb" data-v="En curso" onclick="sr('ev-rg-resol',this)">En curso</div></div></div><div class="f"><div class="fl">Lágrimas art.</div><div class="rg" id="ev-rg-lagr"><div class="rb" data-v="Si" onclick="sr('ev-rg-lagr',this)">Sí</div><div class="rb" data-v="No" onclick="sr('ev-rg-lagr',this)">No</div></div></div><div class="f"><div class="fl">Observaciones</div><textarea id="ev-obs"></textarea></div>`,
+    ea_no_ocular:`<div class="f"><div class="fl">Fecha</div><input type="date" id="ev-date" value="${today}"></div><div class="f"><div class="fl">Tipo</div><select id="ev-tipo-nooc"><option value="">Sel.</option><option>Trombocitopenia</option><option>Anemia</option><option>Neutropenia</option><option>Infección</option><option>Hipogammaglobulinemia</option><option>Neuropatía periférica</option><option>Fatiga</option><option>Otro</option></select></div><div class="f"><div class="fl">Grado</div><select id="ev-grado-nooc"><option value="">Sel.</option><option>Grado 1</option><option>Grado 2</option><option>Grado 3</option><option>Grado 4</option></select></div><div class="f"><div class="fl">Observaciones</div><textarea id="ev-obs"></textarea></div>`,
+    respuesta:`<div class="f"><div class="fl">Fecha</div><input type="date" id="ev-date" value="${today}"></div><div class="f"><div class="fl">Respuesta</div><div class="rg" id="ev-rg-resp"><div class="rb" data-v="RC estricta" onclick="sr('ev-rg-resp',this)">RC estricta</div><div class="rb" data-v="RC" onclick="sr('ev-rg-resp',this)">RC</div><div class="rb" data-v="MBRP" onclick="sr('ev-rg-resp',this)">MBRP</div><div class="rb" data-v="RP" onclick="sr('ev-rg-resp',this)">RP</div><div class="rb" data-v="RP mínima" onclick="sr('ev-rg-resp',this)">RP mín</div><div class="rb" data-v="Enfermedad estable" onclick="sr('ev-rg-resp',this)">Estable</div><div class="rb" data-v="Progresión" onclick="sr('ev-rg-resp',this)">Progresión</div></div></div><div class="f"><div class="fl">EMR</div><div class="rg" id="ev-rg-emr"><div class="rb" data-v="Negativa" onclick="sr('ev-rg-emr',this)">Negativa</div><div class="rb" data-v="Positiva" onclick="sr('ev-rg-emr',this)">Positiva</div><div class="rb" data-v="No realizada" onclick="sr('ev-rg-emr',this)">No realizada</div></div></div><div class="f"><div class="fl">Obs.</div><textarea id="ev-obs"></textarea></div>`,
+    status:`<div class="f"><div class="fl">Fecha</div><input type="date" id="ev-date" value="${today}"></div><div class="f"><div class="fl">Nuevo estado</div><div class="rg" id="ev-rg-status"><div class="rb" data-v="Activo" onclick="sr('ev-rg-status',this)">Activo</div><div class="rb" data-v="Suspendido – EA ocular" onclick="sr('ev-rg-status',this)">Suspendido – EA ocular</div><div class="rb" data-v="Suspendido – EA hematológico" onclick="sr('ev-rg-status',this)">Suspendido – EA hematológico</div><div class="rb" data-v="Suspendido – Progresión" onclick="sr('ev-rg-status',this)">Suspendido – Progresión</div><div class="rb" data-v="Suspendido – Decisión paciente" onclick="sr('ev-rg-status',this)">Suspendido – Decisión</div><div class="rb" data-v="Fallecido – Progresión" onclick="sr('ev-rg-status',this)">Fallecido – Progresión</div><div class="rb" data-v="Fallecido – Infección" onclick="sr('ev-rg-status',this)">Fallecido – Infección</div><div class="rb" data-v="Fallecido – Otra causa" onclick="sr('ev-rg-status',this)">Fallecido – Otra causa</div></div></div><div class="f"><div class="fl">Obs.</div><textarea id="ev-obs"></textarea></div>`,
+    nota:`<div class="f"><div class="fl">Fecha</div><input type="date" id="ev-date" value="${today}"></div><div class="f"><div class="fl">Nota</div><textarea id="ev-obs" style="min-height:80px"></textarea></div>`,
+  };
+  document.getElementById('ev-form').innerHTML=forms[type]||'';
+}
+
+async function addEvent(){
+  if(!currentEvType){showNotif('Seleccioná el tipo','err');return}
+  const date=document.getElementById('ev-date')?.value;
+  if(!date){showNotif('La fecha es obligatoria','err');return}
+  const p=patients.find(x=>x.docId===currentPat);if(!p)return;
+  const email=window.currentUser?.email||'unknown';
+  // Ownership check - only owner can add events
+  if(p.created_by!==email){showNotif('Solo el médico que creó este paciente puede agregar eventos','err');return}
+  const now=new Date().toISOString();
+  let ev={type:currentEvType,date,id:Date.now().toString(),created_by:email,created_at:now};
+  if(currentEvType==='infusion'){ev.num_infusion=document.getElementById('ev-num')?.value||'';ev.dosis=document.getElementById('ev-dosis')?.value||'';ev.observaciones=document.getElementById('ev-obs')?.value||''}
+  else if(currentEvType==='ea_ocular'){ev.tipo=document.getElementById('ev-tipo-oc')?.value||'';ev.grado=document.getElementById('ev-grado')?.value||'';ev.resolvio=rv['ev-rg-resol']||'';ev.lagr=rv['ev-rg-lagr']||'';ev.observaciones=document.getElementById('ev-obs')?.value||''}
+  else if(currentEvType==='ea_no_ocular'){ev.tipo=document.getElementById('ev-tipo-nooc')?.value||'';ev.grado=document.getElementById('ev-grado-nooc')?.value||'';ev.observaciones=document.getElementById('ev-obs')?.value||''}
+  else if(currentEvType==='respuesta'){ev.respuesta=rv['ev-rg-resp']||'';ev.emr=rv['ev-rg-emr']||'';ev.observaciones=document.getElementById('ev-obs')?.value||'';if(!ev.respuesta){showNotif('Seleccioná la respuesta','err');return}}
+  else if(currentEvType==='status'){const raw=rv['ev-rg-status']||'';ev.status=raw.includes('Fallecido')?'Fallecido':raw.includes('Suspendido')?'Suspendido':'Activo';ev.causa=raw;ev.observaciones=document.getElementById('ev-obs')?.value||'';if(!raw){showNotif('Seleccioná el estado','err');return}}
+  else if(currentEvType==='nota'){ev.observaciones=document.getElementById('ev-obs')?.value||'';if(!ev.observaciones){showNotif('Escribí la nota','err');return}}
+  try{
+    const existing=p.events||[];
+    const ref=window.fb.doc(window.fb.db,'patients',p.docId);
+    await window.fb.updateDoc(ref,{events:[...existing,ev]});
+    currentEvType=null;document.querySelectorAll('.ev-type-btn').forEach(b=>b.classList.remove('sel'));document.getElementById('ev-form').innerHTML='';
+    showNotif('✓ Evento registrado');
+  }catch(e){showNotif('Error: '+e.message,'err')}
+}
+
+function doExport(){
+  const hdr=['ID','Iniciales','Edad','Sexo','Institución','Médico','R-ISS','LOT prev','Esquema','Dosis','Estado actual','Última respuesta','Total infusiones','EA oculares','Creado','Creado por'];
+  const rows=patients.map(p=>[p.id,p.ini,p.edad,p.sexo,p.inst,p.medico,p.riss,p.lot,p.esq,p.dosis,latestStatus(p),latestResp(p),countInfus(p),countEAOc(p),(p.created||'').slice(0,10),p.created_by||''].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`));
+  const csv='\uFEFF'+[hdr,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='EAP_Belantamab_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+function showNotif(msg,type=''){const n=document.getElementById('notif');n.textContent=msg;n.className='notif show'+(type?' '+type:'');setTimeout(()=>n.classList.remove('show'),3500)}
+
+// Expose globals
+window.goPage=goPage;window.goFilter=goFilter;window.doSearch=doSearch;window.doFilter=doFilter;
+window.openNew=openNew;window.openEditBase=openEditBase;window.closeModal=closeModal;window.goMTab=goMTab;window.sr=sr;window.saveBase=saveBase;
+window.openDetail=openDetail;window.goDetailTab=goDetailTab;window.selEvType=selEvType;window.addEvent=addEvent;
+window.addEAOcCard=addEAOcCard;window.removeEAOcCard=removeEAOcCard;window.addEANoCard=addEANoCard;window.removeEANoCard=removeEANoCard;
+window.doExport=doExport;
+</script>
+</body>
+</html>
